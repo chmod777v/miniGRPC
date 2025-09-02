@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package = "pkg/proto;g_serv";
+
+service service{
+    rpc Get(GetRequest) returns (GetResponse);
+}
+
+
+message GetRequest{
+    int64 id = 1;
+}
+message GetResponse{
+    UserInfo info = 1;
+}
+
+message UserInfo{
+    int64 id = 1;
+    string name = 2;
+    bool is_human = 3;
+}

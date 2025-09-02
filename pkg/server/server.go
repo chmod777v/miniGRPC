@@ -4,7 +4,7 @@ import (
 	"grpc/internal/config"
 	my_grpc "grpc/internal/grpc"
 	g_serv "grpc/pkg/proto"
-	"log"
+	"log/slog"
 	"net"
 	"strconv"
 
@@ -23,7 +23,7 @@ func Run(s *config.Server) {
 	reflection.Register(ser) //чтобы делится с клиентами какой api есть
 
 	g_serv.RegisterServiceServer(ser, &my_grpc.Server{})
-	log.Println("Server listening at", lis.Addr())
+	slog.Info("Server listening", "Host", lis.Addr())
 
 	if err = ser.Serve(lis); err != nil {
 		panic("Failed to serve:" + err.Error())

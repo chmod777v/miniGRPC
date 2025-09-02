@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	g_serv "grpc/pkg/proto"
-	"log"
+	"log/slog"
 	"time"
 
 	"google.golang.org/grpc"
@@ -24,7 +24,7 @@ func main() {
 
 	resp, err := cli.Get(ctx, &g_serv.GetRequest{Id: 123})
 	if err != nil {
-		log.Fatalln("failed to get response:", err.Error())
+		slog.Error("failed to get response", "Error", err.Error())
 	}
-	log.Println(resp.GetInfo())
+	slog.Info("Response", "Human", resp.GetInfo())
 }

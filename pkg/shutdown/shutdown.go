@@ -1,7 +1,7 @@
 package shutdown
 
 import (
-	"log"
+	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
@@ -12,6 +12,6 @@ func Shutdown() {
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
 	sign := <-stop
 
-	log.Println("Service terminated signal:", sign)
+	slog.Info("Service terminated", "signal", sign)
 
 }

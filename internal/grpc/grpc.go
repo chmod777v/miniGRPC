@@ -3,7 +3,7 @@ package my_grpc
 import (
 	"context"
 	g_serv "grpc/pkg/proto"
-	"log"
+	"log/slog"
 )
 
 type Server struct {
@@ -11,7 +11,7 @@ type Server struct {
 }
 
 func (s *Server) Get(ctx context.Context, req *g_serv.GetRequest) (*g_serv.GetResponse, error) {
-	log.Println(req.GetId())
+	slog.Debug("Request", "Id", req.GetId())
 	resp := &g_serv.GetResponse{
 		Info: &g_serv.UserInfo{
 			Id:      req.GetId(),

@@ -21,6 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Methods
 type GetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -109,18 +110,115 @@ func (x *GetResponse) GetInfo() *UserInfo {
 	return nil
 }
 
-type UserInfo struct {
+type PostRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Info          *UserInfo              `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PostRequest) Reset() {
+	*x = PostRequest{}
+	mi := &file_api_service_service_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PostRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PostRequest) ProtoMessage() {}
+
+func (x *PostRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_service_service_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PostRequest.ProtoReflect.Descriptor instead.
+func (*PostRequest) Descriptor() ([]byte, []int) {
+	return file_api_service_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *PostRequest) GetInfo() *UserInfo {
+	if x != nil {
+		return x.Info
+	}
+	return nil
+}
+
+type PostResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Info          *UserInfo              `protobuf:"bytes,2,opt,name=info,proto3" json:"info,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PostResponse) Reset() {
+	*x = PostResponse{}
+	mi := &file_api_service_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PostResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PostResponse) ProtoMessage() {}
+
+func (x *PostResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_service_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PostResponse.ProtoReflect.Descriptor instead.
+func (*PostResponse) Descriptor() ([]byte, []int) {
+	return file_api_service_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *PostResponse) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *PostResponse) GetInfo() *UserInfo {
+	if x != nil {
+		return x.Info
+	}
+	return nil
+}
+
+// Struct
+type UserInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	IsHuman       bool                   `protobuf:"varint,3,opt,name=is_human,json=isHuman,proto3" json:"is_human,omitempty"`
+	Admin         bool                   `protobuf:"varint,3,opt,name=admin,proto3" json:"admin,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UserInfo) Reset() {
 	*x = UserInfo{}
-	mi := &file_api_service_service_proto_msgTypes[2]
+	mi := &file_api_service_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -132,7 +230,7 @@ func (x *UserInfo) String() string {
 func (*UserInfo) ProtoMessage() {}
 
 func (x *UserInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_api_service_service_proto_msgTypes[2]
+	mi := &file_api_service_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -145,12 +243,12 @@ func (x *UserInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserInfo.ProtoReflect.Descriptor instead.
 func (*UserInfo) Descriptor() ([]byte, []int) {
-	return file_api_service_service_proto_rawDescGZIP(), []int{2}
+	return file_api_service_service_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *UserInfo) GetId() int64 {
+func (x *UserInfo) GetUserId() int64 {
 	if x != nil {
-		return x.Id
+		return x.UserId
 	}
 	return 0
 }
@@ -162,9 +260,9 @@ func (x *UserInfo) GetName() string {
 	return ""
 }
 
-func (x *UserInfo) GetIsHuman() bool {
+func (x *UserInfo) GetAdmin() bool {
 	if x != nil {
-		return x.IsHuman
+		return x.Admin
 	}
 	return false
 }
@@ -178,13 +276,19 @@ const file_api_service_service_proto_rawDesc = "" +
 	"GetRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\",\n" +
 	"\vGetResponse\x12\x1d\n" +
-	"\x04info\x18\x01 \x01(\v2\t.UserInfoR\x04info\"I\n" +
-	"\bUserInfo\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x19\n" +
-	"\bis_human\x18\x03 \x01(\bR\aisHuman2+\n" +
+	"\x04info\x18\x01 \x01(\v2\t.UserInfoR\x04info\",\n" +
+	"\vPostRequest\x12\x1d\n" +
+	"\x04info\x18\x01 \x01(\v2\t.UserInfoR\x04info\"=\n" +
+	"\fPostResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
+	"\x04info\x18\x02 \x01(\v2\t.UserInfoR\x04info\"M\n" +
+	"\bUserInfo\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
+	"\x05admin\x18\x03 \x01(\bR\x05admin2P\n" +
 	"\aservice\x12 \n" +
-	"\x03Get\x12\v.GetRequest\x1a\f.GetResponseB\x12Z\x10pkg/proto;g_servb\x06proto3"
+	"\x03Get\x12\v.GetRequest\x1a\f.GetResponse\x12#\n" +
+	"\x04Post\x12\f.PostRequest\x1a\r.PostResponseB\x12Z\x10pkg/proto;g_servb\x06proto3"
 
 var (
 	file_api_service_service_proto_rawDescOnce sync.Once
@@ -198,21 +302,27 @@ func file_api_service_service_proto_rawDescGZIP() []byte {
 	return file_api_service_service_proto_rawDescData
 }
 
-var file_api_service_service_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_api_service_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_api_service_service_proto_goTypes = []any{
-	(*GetRequest)(nil),  // 0: GetRequest
-	(*GetResponse)(nil), // 1: GetResponse
-	(*UserInfo)(nil),    // 2: UserInfo
+	(*GetRequest)(nil),   // 0: GetRequest
+	(*GetResponse)(nil),  // 1: GetResponse
+	(*PostRequest)(nil),  // 2: PostRequest
+	(*PostResponse)(nil), // 3: PostResponse
+	(*UserInfo)(nil),     // 4: UserInfo
 }
 var file_api_service_service_proto_depIdxs = []int32{
-	2, // 0: GetResponse.info:type_name -> UserInfo
-	0, // 1: service.Get:input_type -> GetRequest
-	1, // 2: service.Get:output_type -> GetResponse
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: GetResponse.info:type_name -> UserInfo
+	4, // 1: PostRequest.info:type_name -> UserInfo
+	4, // 2: PostResponse.info:type_name -> UserInfo
+	0, // 3: service.Get:input_type -> GetRequest
+	2, // 4: service.Post:input_type -> PostRequest
+	1, // 5: service.Get:output_type -> GetResponse
+	3, // 6: service.Post:output_type -> PostResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_api_service_service_proto_init() }
@@ -226,7 +336,7 @@ func file_api_service_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_service_service_proto_rawDesc), len(file_api_service_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

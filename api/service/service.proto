@@ -4,9 +4,10 @@ option go_package = "pkg/proto;g_serv";
 
 service service{
     rpc Get(GetRequest) returns (GetResponse);
+    rpc Post(PostRequest) returns (PostResponse);
 }
 
-
+//Methods
 message GetRequest{
     int64 id = 1;
 }
@@ -14,8 +15,17 @@ message GetResponse{
     UserInfo info = 1;
 }
 
-message UserInfo{
+message PostRequest{
+    UserInfo info = 1;
+}
+message PostResponse{
     int64 id = 1;
+    UserInfo info = 2;
+}
+
+//Struct
+message UserInfo{
+    int64 user_id = 1;
     string name = 2;
-    bool is_human = 3;
+    bool admin = 3;
 }

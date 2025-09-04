@@ -22,4 +22,5 @@ func Init(env string) {
 		})
 	}
 	slog.SetDefault(slog.New(handler))
+	slog.Info("logger launched successfully")
 }

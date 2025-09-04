@@ -12,12 +12,12 @@ import (
 func main() {
 	cfg := config.LoadConfig()
 	logger.Init(cfg.Env)
-	slog.Info("Cfg and logger launched successfully")
-	database, err := database.DbInit(&cfg.Database)
+	slog.Info("Cfg launched successfully")
+	db, err := database.DbInit(&cfg.Database)
 	if err != nil {
 		slog.Error("Database not initialization", "ERROR:", err.Error())
 		return
 	}
-	go server.Run(&cfg.Server, database)
-	shutdown.Shutdown()
+	go server.Run(&cfg.Server, db)
+	shutdown.Shutdown(db)
 }

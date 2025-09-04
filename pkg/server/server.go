@@ -21,7 +21,7 @@ func Run(s *config.Server, db *database.Database) {
 	}
 
 	ser := grpc.NewServer()
-	reflection.Register(ser) //чтобы делится с клиентами какой api есть
+	reflection.Register(ser)
 
 	g_serv.RegisterServiceServer(ser, &my_grpc.Server{Db: db})
 	slog.Info("Server listening", "Host", lis.Addr())

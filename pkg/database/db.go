@@ -25,6 +25,9 @@ func DbInit(db *config.Database) (*Database, error) {
 }
 func (db *Database) Close() {
 	if db.Pool != nil {
+		slog.Info("Closing database connection pool...")
 		db.Pool.Close()
+		db.Pool = nil
+		slog.Info("Database connection closed successfully")
 	}
 }

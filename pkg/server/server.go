@@ -3,6 +3,7 @@ package server
 import (
 	"grpc/internal/config"
 	my_grpc "grpc/internal/grpc"
+	"grpc/pkg/database"
 	g_serv "grpc/pkg/proto"
 	"log/slog"
 	"net"
@@ -12,7 +13,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-func Run(s *config.Server) {
+func Run(s *config.Server, db *database.Database) {
 	addr := s.Host + ":" + strconv.Itoa(s.Port)
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -22,7 +23,7 @@ func Run(s *config.Server) {
 	ser := grpc.NewServer()
 	reflection.Register(ser) //чтобы делится с клиентами какой api есть
 
-	g_serv.RegisterServiceServer(ser, &my_grpc.Server{})
+	g_serv.RegisterServiceServer(ser, &my_grpc.Server{Db: db})
 	slog.Info("Server listening", "Host", lis.Addr())
 
 	if err = ser.Serve(lis); err != nil {

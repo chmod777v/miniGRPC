@@ -18,7 +18,6 @@ func main() {
 	defer conn.Close()
 
 	cli := g_serv.NewServiceClient(conn)
-
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 

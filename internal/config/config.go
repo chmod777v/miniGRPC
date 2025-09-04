@@ -8,10 +8,17 @@ import (
 )
 
 type Config struct {
-	Env    string
-	Server Server
+	Env      string
+	Server   Server
+	Database Database
 }
-
+type Database struct {
+	Username string
+	Password string
+	Host     string
+	Port     int
+	Db_name  string
+}
 type Server struct {
 	Port int
 	Host string

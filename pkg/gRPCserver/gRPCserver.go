@@ -1,4 +1,4 @@
-package server
+package gRPCserver
 
 import (
 	"grpc/internal/config"

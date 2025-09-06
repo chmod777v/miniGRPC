@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-func Run(s *config.Server, db *database.Database) {
+func Run(s *config.Grpc_server, db *database.Database) {
 	addr := s.Host + ":" + strconv.Itoa(s.Port)
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {

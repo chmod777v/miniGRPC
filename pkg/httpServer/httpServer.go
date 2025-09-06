@@ -69,9 +69,7 @@ func (h *httpServer) handler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Run() {
-	serv := grpcconect.NewServer()
-	defer serv.Close()
+func Run(serv *grpcconect.Server) {
 
 	httpServer := &httpServer{grpcServer: serv}
 	http.HandleFunc("/", httpServer.handler)

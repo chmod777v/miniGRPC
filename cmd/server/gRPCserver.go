@@ -5,7 +5,8 @@ import (
 	"grpc/internal/logger"
 	"grpc/pkg/database"
 	gRPCserver "grpc/pkg/gRPCserver"
-	"grpc/pkg/shutdown"
+	gRPCshutdown "grpc/pkg/shutdown/gRPCserver"
+
 	"log/slog"
 )
 
@@ -18,6 +19,6 @@ func main() {
 		slog.Error("Database not initialization", "ERROR:", err.Error())
 		return
 	}
-	go gRPCserver.Run(&cfg.Server, db)
-	shutdown.Shutdown(db)
+	go gRPCserver.Run(&cfg.Grpc_server, db)
+	gRPCshutdown.Shutdown(db)
 }

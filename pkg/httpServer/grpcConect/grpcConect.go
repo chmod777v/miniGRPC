@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	g_serv "grpc/pkg/proto"
+	"log/slog"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -14,8 +15,9 @@ type Server struct {
 	conn       *grpc.ClientConn
 }
 
-func NewServer() *Server {
-	conn, err := grpc.NewClient("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
+func NewServer(host string, port int) *Server {
+	link := fmt.Sprintf("%s:%v", host, port)
+	conn, err := grpc.NewClient(link, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic("Failed to conect to server:" + err.Error())
 	}
@@ -43,6 +45,8 @@ func (s *Server) PostRequestGrpc(ctx context.Context, requestData *g_serv.PostRe
 
 func (s *Server) Close() {
 	if s.conn != nil {
+		slog.Info("ClientConn closing...")
 		s.conn.Close()
+		slog.Info("ClientConn closed successfully")
 	}
 }

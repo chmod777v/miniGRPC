@@ -1,4 +1,4 @@
-package shutdown
+package gRPCshutdown
 
 import (
 	"grpc/pkg/database"
@@ -21,6 +21,7 @@ func Shutdown(db *database.Database) {
 		if db != nil {
 			db.Close()
 		}
+
 		done <- true
 	}()
 	select {
@@ -28,5 +29,5 @@ func Shutdown(db *database.Database) {
 	case <-time.After(5 * time.Second):
 	}
 
-	slog.Info("Server stopped")
+	slog.Info("gRPC server stopped")
 }

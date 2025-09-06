@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
+//go:generate mockgen -source=interfaces.go -destination=mock.go
 type DatabaseInterface interface {
 	QueryRow(ctx context.Context, sql string, args ...interface{}) interface{}
 	Exec(ctx context.Context, sql string, args ...interface{}) (pgconn.CommandTag, error)

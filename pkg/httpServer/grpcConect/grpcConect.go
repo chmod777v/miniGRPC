@@ -21,7 +21,6 @@ func NewServer(host string, port int) *Server {
 	if err != nil {
 		panic("Failed to conect to server:" + err.Error())
 	}
-
 	return &Server{
 		grpcClient: g_serv.NewServiceClient(conn),
 		conn:       conn,

@@ -5,6 +5,11 @@ database:
   host: "localhost"
   port: 5432
   db_name: "miniGRPC"
+
 grpc_server:
+  port: 8090
+  host: "localhost"
+
+http_server:
   port: 8080
   host: "localhost"

@@ -9,8 +9,9 @@ import (
 
 type Config struct {
 	Env         string
-	Grpc_server Grpc_server
 	Database    Database
+	Grpc_server Grpc_server
+	Http_server Http_server
 }
 type Database struct {
 	Username string
@@ -20,6 +21,10 @@ type Database struct {
 	Db_name  string
 }
 type Grpc_server struct {
+	Port int
+	Host string
+}
+type Http_server struct {
 	Port int
 	Host string
 }

@@ -16,6 +16,6 @@ func main() {
 
 	serv := grpcconect.NewServer(cfg.Grpc_server.Host, cfg.Grpc_server.Port)
 
-	go httpServer.Run(serv)
+	go httpServer.Run(serv, cfg.Http_server.Host, cfg.Http_server.Port)
 	httpshutdown.Shutdown(serv)
 }

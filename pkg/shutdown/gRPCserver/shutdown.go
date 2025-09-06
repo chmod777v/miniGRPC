@@ -21,13 +21,11 @@ func Shutdown(db *database.Database) {
 		if db != nil {
 			db.Close()
 		}
-
 		done <- true
 	}()
 	select {
 	case <-done:
 	case <-time.After(5 * time.Second):
 	}
-
 	slog.Info("gRPC server stopped")
 }

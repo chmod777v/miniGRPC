@@ -3,7 +3,7 @@ package httpServer
 import (
 	"encoding/json"
 	"fmt"
-	my_grpc "grpc/internal/grpc"
+	"grpc/pkg/database"
 	grpcconect "grpc/pkg/httpServer/grpcConect"
 	g_serv "grpc/pkg/proto"
 	"io"
@@ -28,7 +28,7 @@ func getRequest(body *io.ReadCloser, person interface{}, w http.ResponseWriter) 
 }
 func (h *httpServer) handler(w http.ResponseWriter, r *http.Request) {
 	var personID personID
-	var person my_grpc.Person
+	var person database.Person
 	switch r.Method {
 	case http.MethodGet:
 		if err := getRequest(&r.Body, &personID, w); err != nil {
@@ -43,7 +43,7 @@ func (h *httpServer) handler(w http.ResponseWriter, r *http.Request) {
 		}
 		slog.Debug("ResponseGet", "Data", resp)
 
-		req := my_grpc.Person{
+		req := database.Person{
 			Id:      personID.Id,
 			User_id: int(resp.Info.UserId),
 			Name:    resp.Info.Name,

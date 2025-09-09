@@ -5,6 +5,10 @@ import (
 	"grpc/pkg/database"
 	g_serv "grpc/pkg/proto"
 	"log/slog"
+	"strconv"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type Server struct {
@@ -29,6 +33,16 @@ func (s *Server) Get(ctx context.Context, req *g_serv.GetRequest) (*g_serv.GetRe
 }
 func (s *Server) Post(ctx context.Context, req *g_serv.PostRequest) (*g_serv.PostResponse, error) {
 	slog.Debug("Request", "Method", "Post", "Data", req)
+
+	if req.Info.Name == "" {
+		slog.Debug("Reques error", "ERROR", "empty field")
+		return nil, status.Error(codes.InvalidArgument, "empty field")
+	}
+	if len(strconv.Itoa(int(req.Info.UserId))) != 6 {
+		slog.Debug("Reques error", "ERROR", "incorrect user_id lenght")
+		return nil, status.Error(codes.InvalidArgument, "incorrect user_id lenght")
+	}
+
 	id, err := s.Db.CreatePerson(ctx, req)
 	if err != nil {
 		return nil, err

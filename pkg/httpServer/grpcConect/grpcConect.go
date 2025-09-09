@@ -7,7 +7,9 @@ import (
 	"log/slog"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/status"
 )
 
 type Server struct {
@@ -30,14 +32,14 @@ func NewServer(host string, port int) *Server {
 func (s *Server) GetRequestGrpc(ctx context.Context, requestData *g_serv.GetRequest) (*g_serv.GetResponse, error) {
 	response, err := s.grpcClient.Get(ctx, requestData)
 	if err != nil {
-		return nil, fmt.Errorf("gRPC call failed: %w", err)
+		return nil, status.Errorf(codes.Internal, "gRPC call failed")
 	}
 	return response, nil
 }
 func (s *Server) PostRequestGrpc(ctx context.Context, requestData *g_serv.PostRequest) (*g_serv.PostResponse, error) {
 	response, err := s.grpcClient.Post(ctx, requestData)
 	if err != nil {
-		return nil, fmt.Errorf("gRPC call failed: %w", err)
+		return nil, status.Errorf(codes.Internal, "gRPC call failed:%v", err)
 	}
 	return response, nil
 }

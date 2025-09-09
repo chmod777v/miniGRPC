@@ -10,6 +10,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	grpc "google.golang.org/grpc"
 )
 
 // MockHTTPServer is a mock of HTTPServer interface.
@@ -47,32 +48,42 @@ func (mr *MockHTTPServerMockRecorder) Close() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockHTTPServer)(nil).Close))
 }
 
-// GetRequestGrpc mocks base method.
-func (m *MockHTTPServer) GetRequestGrpc(ctx context.Context, requestData *g_serv.GetRequest) (*g_serv.GetResponse, error) {
+// Get mocks base method.
+func (m *MockHTTPServer) Get(ctx context.Context, requestData *g_serv.GetRequest, opts ...grpc.CallOption) (*g_serv.GetResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetRequestGrpc", ctx, requestData)
+	varargs := []interface{}{ctx, requestData}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Get", varargs...)
 	ret0, _ := ret[0].(*g_serv.GetResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetRequestGrpc indicates an expected call of GetRequestGrpc.
-func (mr *MockHTTPServerMockRecorder) GetRequestGrpc(ctx, requestData interface{}) *gomock.Call {
+// Get indicates an expected call of Get.
+func (mr *MockHTTPServerMockRecorder) Get(ctx, requestData interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestGrpc", reflect.TypeOf((*MockHTTPServer)(nil).GetRequestGrpc), ctx, requestData)
+	varargs := append([]interface{}{ctx, requestData}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockHTTPServer)(nil).Get), varargs...)
 }
 
-// PostRequestGrpc mocks base method.
-func (m *MockHTTPServer) PostRequestGrpc(ctx context.Context, requestData *g_serv.PostRequest) (*g_serv.PostResponse, error) {
+// Post mocks base method.
+func (m *MockHTTPServer) Post(ctx context.Context, requestData *g_serv.PostRequest, opts ...grpc.CallOption) (*g_serv.PostResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PostRequestGrpc", ctx, requestData)
+	varargs := []interface{}{ctx, requestData}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Post", varargs...)
 	ret0, _ := ret[0].(*g_serv.PostResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// PostRequestGrpc indicates an expected call of PostRequestGrpc.
-func (mr *MockHTTPServerMockRecorder) PostRequestGrpc(ctx, requestData interface{}) *gomock.Call {
+// Post indicates an expected call of Post.
+func (mr *MockHTTPServerMockRecorder) Post(ctx, requestData interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostRequestGrpc", reflect.TypeOf((*MockHTTPServer)(nil).PostRequestGrpc), ctx, requestData)
+	varargs := append([]interface{}{ctx, requestData}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Post", reflect.TypeOf((*MockHTTPServer)(nil).Post), varargs...)
 }

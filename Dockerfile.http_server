@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 RUN go mod download
 
-RUN go build -o http-server ./cmd/client/httpServer.go
+RUN go build -o http-server ./cmd/http_server/httpServer.go
 RUN chmod +x http-server
 
 EXPOSE 8080

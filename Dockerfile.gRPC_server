@@ -1,7 +1,6 @@
-FROM golang:1.25.1-alpine3.22
+FROM golang:1.25.1-alpine3.22 AS builder
 
 WORKDIR /app
-
 
 COPY . .
 RUN go mod download
@@ -9,8 +8,19 @@ RUN go mod download
 RUN go build -o gRPC-server ./cmd/gRPC_server/gRPCserver.go
 RUN chmod +x gRPC-server
 
+
+
+FROM alpine:3.22
+
+WORKDIR /app
+
+COPY --from=builder /app/gRPC-server ./
+COPY --from=builder /app/config/local_docker.yml ./local.yml
+
+RUN chmod +x gRPC-server
+
 EXPOSE 8090
 
-CMD ["./gRPC-server", "--config=./config/local.yml"]
+CMD ["./gRPC-server", "--config=./local.yml"]
 
 #docker build -t grpc_server -f Dockerfile.gRPC_server .

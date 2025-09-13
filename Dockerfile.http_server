@@ -1,7 +1,6 @@
-FROM golang:1.25.1-alpine3.22
+FROM golang:1.25.1-alpine3.22 AS builder
 
 WORKDIR /app
-
 
 COPY . .
 RUN go mod download
@@ -9,8 +8,19 @@ RUN go mod download
 RUN go build -o http-server ./cmd/http_server/httpServer.go
 RUN chmod +x http-server
 
+
+
+FROM alpine:3.22
+
+WORKDIR /app
+
+COPY --from=builder /app/http-server ./
+COPY --from=builder /app/config/local_docker.yml ./local.yml
+
+RUN chmod +x http-server
+
 EXPOSE 8080
 
-CMD ["./http-server", "--config=./config/local.yml"]
+CMD ["./http-server", "--config=./local.yml"]
 
 #docker build -t http_server -f Dockerfile.http_server .

@@ -1,0 +1,44 @@
+services:
+  postgres:
+    image: postgres:18rc1-alpine3.22
+    environment:
+      - POSTGRES_DB=miniGRPC
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - :5432
+    networks:
+    - services-networks
+
+
+  grpc-server:
+    container_name: grpc_server
+    build:
+      context: .
+      dockerfile: Dockerfile.gRPC_server
+    networks:
+      - services-networks
+    depends_on:
+      - postgres
+
+
+  http-server:
+    container_name: http_server
+    build:
+      context: .
+      dockerfile: Dockerfile.http_server
+    ports: 
+      - 8080:8080
+    networks:
+      - services-networks
+    depends_on:
+      - grpc-server
+
+networks:
+  services-networks:
+    driver: bridge
+
+volumes:
+  postgres_data:

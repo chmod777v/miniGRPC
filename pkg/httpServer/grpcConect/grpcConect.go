@@ -16,6 +16,10 @@ type Server struct {
 	grpcClient g_serv.ServiceClient
 	conn       *grpc.ClientConn
 }
+type RequestGrpc interface {
+	GetRequestGrpc(ctx context.Context, requestData *g_serv.GetRequest) (*g_serv.GetResponse, error)
+	PostRequestGrpc(ctx context.Context, requestData *g_serv.PostRequest) (*g_serv.PostResponse, error)
+}
 
 func NewServer(host string, port int) *Server {
 	link := fmt.Sprintf("%s:%v", host, port)

@@ -37,7 +37,7 @@ func TestGRPCServer_Get(t *testing.T) {
 			name:           "person not found",
 			inputID:        999,
 			expectedPerson: nil,
-			expectedError:  status.Error(codes.InvalidArgument, "empty field"),
+			expectedError:  status.Error(codes.InvalidArgument, "person not found"),
 			expectedTimes:  1,
 		},
 	}

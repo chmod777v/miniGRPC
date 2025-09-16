@@ -36,18 +36,6 @@ func (m *MockHTTPServer) EXPECT() *MockHTTPServerMockRecorder {
 	return m.recorder
 }
 
-// Close mocks base method.
-func (m *MockHTTPServer) Close() {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Close")
-}
-
-// Close indicates an expected call of Close.
-func (mr *MockHTTPServerMockRecorder) Close() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockHTTPServer)(nil).Close))
-}
-
 // Get mocks base method.
 func (m *MockHTTPServer) Get(ctx context.Context, requestData *g_serv.GetRequest, opts ...grpc.CallOption) (*g_serv.GetResponse, error) {
 	m.ctrl.T.Helper()
@@ -86,4 +74,57 @@ func (mr *MockHTTPServerMockRecorder) Post(ctx, requestData interface{}, opts ..
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, requestData}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Post", reflect.TypeOf((*MockHTTPServer)(nil).Post), varargs...)
+}
+
+// MockHttpRequestGrpc is a mock of HttpRequestGrpc interface.
+type MockHttpRequestGrpc struct {
+	ctrl     *gomock.Controller
+	recorder *MockHttpRequestGrpcMockRecorder
+}
+
+// MockHttpRequestGrpcMockRecorder is the mock recorder for MockHttpRequestGrpc.
+type MockHttpRequestGrpcMockRecorder struct {
+	mock *MockHttpRequestGrpc
+}
+
+// NewMockHttpRequestGrpc creates a new mock instance.
+func NewMockHttpRequestGrpc(ctrl *gomock.Controller) *MockHttpRequestGrpc {
+	mock := &MockHttpRequestGrpc{ctrl: ctrl}
+	mock.recorder = &MockHttpRequestGrpcMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockHttpRequestGrpc) EXPECT() *MockHttpRequestGrpcMockRecorder {
+	return m.recorder
+}
+
+// GetRequestGrpc mocks base method.
+func (m *MockHttpRequestGrpc) GetRequestGrpc(ctx context.Context, requestData *g_serv.GetRequest) (*g_serv.GetResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRequestGrpc", ctx, requestData)
+	ret0, _ := ret[0].(*g_serv.GetResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRequestGrpc indicates an expected call of GetRequestGrpc.
+func (mr *MockHttpRequestGrpcMockRecorder) GetRequestGrpc(ctx, requestData interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestGrpc", reflect.TypeOf((*MockHttpRequestGrpc)(nil).GetRequestGrpc), ctx, requestData)
+}
+
+// PostRequestGrpc mocks base method.
+func (m *MockHttpRequestGrpc) PostRequestGrpc(ctx context.Context, requestData *g_serv.PostRequest) (*g_serv.PostResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PostRequestGrpc", ctx, requestData)
+	ret0, _ := ret[0].(*g_serv.PostResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PostRequestGrpc indicates an expected call of PostRequestGrpc.
+func (mr *MockHttpRequestGrpcMockRecorder) PostRequestGrpc(ctx, requestData interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostRequestGrpc", reflect.TypeOf((*MockHttpRequestGrpc)(nil).PostRequestGrpc), ctx, requestData)
 }

@@ -8,6 +8,8 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func TestRequestGrpc_Get(t *testing.T) {
@@ -16,19 +18,25 @@ func TestRequestGrpc_Get(t *testing.T) {
 		inputID        int64
 		expectedPerson *g_serv.GetResponse
 		expectedError  error
-		expectedTimes  int
-	}{{
-		name:    "successful get person",
-		inputID: 1,
-		expectedPerson: &g_serv.GetResponse{
-			Info: &g_serv.UserInfo{
-				Name:   "John",
-				Admin:  true,
-				UserId: 123123,
-			}},
-		expectedError: nil,
-		expectedTimes: 1,
-	}}
+	}{
+		{
+			name:    "successful get person",
+			inputID: 1,
+			expectedPerson: &g_serv.GetResponse{
+				Info: &g_serv.UserInfo{
+					Name:   "John",
+					Admin:  true,
+					UserId: 123123,
+				}},
+			expectedError: nil,
+		},
+		{
+			name:           "error get person",
+			inputID:        23,
+			expectedPerson: nil,
+			expectedError:  status.Error(codes.InvalidArgument, "error processing request"),
+		},
+	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
@@ -38,18 +46,21 @@ func TestRequestGrpc_Get(t *testing.T) {
 			expectedReq := &g_serv.GetRequest{Id: tc.inputID}
 			mockGrpc.EXPECT().
 				Get(gomock.Any(), expectedReq).
-				Return(tc.expectedPerson, tc.expectedError).
-				Times(tc.expectedTimes)
+				Return(tc.expectedPerson, tc.expectedError)
 
 			server := &Server{grpcClient: mockGrpc}
 			req := &g_serv.GetRequest{Id: tc.inputID}
-			resp, err := server.grpcClient.Get(context.Background(), req)
+			resp, err := server.GetRequestGrpc(context.Background(), req)
 
-			assert.NoError(t, err)
-			assert.NotNil(t, resp)
-			assert.Equal(t, tc.expectedPerson.Info.Name, resp.Info.Name)
-			assert.Equal(t, tc.expectedPerson.Info.UserId, resp.Info.UserId)
-			assert.Equal(t, tc.expectedPerson.Info.Admin, resp.Info.Admin)
+			if err != nil {
+				assert.Empty(t, resp)
+			} else {
+				assert.NoError(t, err)
+				assert.NotNil(t, resp)
+				assert.Equal(t, tc.expectedPerson.Info.Name, resp.Info.Name)
+				assert.Equal(t, tc.expectedPerson.Info.UserId, resp.Info.UserId)
+				assert.Equal(t, tc.expectedPerson.Info.Admin, resp.Info.Admin)
+			}
 
 		})
 	}
@@ -61,7 +72,6 @@ func TestRequestGrpc_Post(t *testing.T) {
 		inputPerson   *g_serv.PostRequest
 		expectedId    *g_serv.PostResponse
 		expectedError error
-		expectedTimes int
 	}{
 		{
 			name: "successful post person",
@@ -73,7 +83,17 @@ func TestRequestGrpc_Post(t *testing.T) {
 				}},
 			expectedId:    &g_serv.PostResponse{Id: 12},
 			expectedError: nil,
-			expectedTimes: 1,
+		},
+		{
+			name: "error post person",
+			inputPerson: &g_serv.PostRequest{
+				Info: &g_serv.UserInfo{
+					Name:   "Lidia",
+					Admin:  false,
+					UserId: 123,
+				}},
+			expectedId:    nil,
+			expectedError: status.Error(codes.InvalidArgument, "error processing request"),
 		},
 	}
 
@@ -85,16 +105,19 @@ func TestRequestGrpc_Post(t *testing.T) {
 
 			mockGrpc.EXPECT().
 				Post(gomock.Any(), tc.inputPerson).
-				Return(tc.expectedId, tc.expectedError).
-				Times(tc.expectedTimes)
+				Return(tc.expectedId, tc.expectedError)
 
 			server := &Server{grpcClient: mockGrpc}
 			req := tc.inputPerson
-			resp, err := server.grpcClient.Post(context.Background(), req)
+			resp, err := server.PostRequestGrpc(context.Background(), req)
 
-			assert.NoError(t, err)
-			assert.NotNil(t, resp)
-			assert.Equal(t, tc.expectedId.Id, resp.Id)
+			if err != nil {
+				assert.Empty(t, resp)
+			} else {
+				assert.NoError(t, err)
+				assert.NotNil(t, resp)
+				assert.Equal(t, tc.expectedId.Id, resp.Id)
+			}
 
 		})
 	}

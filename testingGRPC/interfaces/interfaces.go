@@ -16,3 +16,12 @@ type GRPCServer interface {
 	Get(ctx context.Context, req *g_serv.GetRequest) (*g_serv.GetResponse, error)
 	Post(ctx context.Context, req *g_serv.PostRequest) (*g_serv.PostResponse, error)
 }
+
+//
+
+type DatabaseScan interface {
+	Scan(dest ...any) error
+}
+type DatabaseQueryRow interface {
+	QueryRow(ctx context.Context, sql string, args ...any) DatabaseScan
+}

@@ -7,7 +7,8 @@ package mock_grpctests
 import (
 	context "context"
 	database "grpc/pkg/database"
-	g_serv "grpc/pkg/proto"
+	proto "grpc/pkg/proto"
+	interfaces "grpc/testingGRPC/interfaces"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -37,7 +38,7 @@ func (m *MockDatabase) EXPECT() *MockDatabaseMockRecorder {
 }
 
 // CreatePerson mocks base method.
-func (m *MockDatabase) CreatePerson(ctx context.Context, req *g_serv.PostRequest) (int64, error) {
+func (m *MockDatabase) CreatePerson(ctx context.Context, req *proto.PostRequest) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreatePerson", ctx, req)
 	ret0, _ := ret[0].(int64)
@@ -90,10 +91,10 @@ func (m *MockGRPCServer) EXPECT() *MockGRPCServerMockRecorder {
 }
 
 // Get mocks base method.
-func (m *MockGRPCServer) Get(ctx context.Context, req *g_serv.GetRequest) (*g_serv.GetResponse, error) {
+func (m *MockGRPCServer) Get(ctx context.Context, req *proto.GetRequest) (*proto.GetResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", ctx, req)
-	ret0, _ := ret[0].(*g_serv.GetResponse)
+	ret0, _ := ret[0].(*proto.GetResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -105,10 +106,10 @@ func (mr *MockGRPCServerMockRecorder) Get(ctx, req interface{}) *gomock.Call {
 }
 
 // Post mocks base method.
-func (m *MockGRPCServer) Post(ctx context.Context, req *g_serv.PostRequest) (*g_serv.PostResponse, error) {
+func (m *MockGRPCServer) Post(ctx context.Context, req *proto.PostRequest) (*proto.PostResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Post", ctx, req)
-	ret0, _ := ret[0].(*g_serv.PostResponse)
+	ret0, _ := ret[0].(*proto.PostResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -117,4 +118,87 @@ func (m *MockGRPCServer) Post(ctx context.Context, req *g_serv.PostRequest) (*g_
 func (mr *MockGRPCServerMockRecorder) Post(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Post", reflect.TypeOf((*MockGRPCServer)(nil).Post), ctx, req)
+}
+
+// MockDatabaseScan is a mock of DatabaseScan interface.
+type MockDatabaseScan struct {
+	ctrl     *gomock.Controller
+	recorder *MockDatabaseScanMockRecorder
+}
+
+// MockDatabaseScanMockRecorder is the mock recorder for MockDatabaseScan.
+type MockDatabaseScanMockRecorder struct {
+	mock *MockDatabaseScan
+}
+
+// NewMockDatabaseScan creates a new mock instance.
+func NewMockDatabaseScan(ctrl *gomock.Controller) *MockDatabaseScan {
+	mock := &MockDatabaseScan{ctrl: ctrl}
+	mock.recorder = &MockDatabaseScanMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockDatabaseScan) EXPECT() *MockDatabaseScanMockRecorder {
+	return m.recorder
+}
+
+// Scan mocks base method.
+func (m *MockDatabaseScan) Scan(dest ...any) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range dest {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Scan", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Scan indicates an expected call of Scan.
+func (mr *MockDatabaseScanMockRecorder) Scan(dest ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Scan", reflect.TypeOf((*MockDatabaseScan)(nil).Scan), dest...)
+}
+
+// MockDatabaseQS is a mock of DatabaseQS interface.
+type MockDatabaseQS struct {
+	ctrl     *gomock.Controller
+	recorder *MockDatabaseQSMockRecorder
+}
+
+// MockDatabaseQSMockRecorder is the mock recorder for MockDatabaseQS.
+type MockDatabaseQSMockRecorder struct {
+	mock *MockDatabaseQS
+}
+
+// NewMockDatabaseQS creates a new mock instance.
+func NewMockDatabaseQS(ctrl *gomock.Controller) *MockDatabaseQS {
+	mock := &MockDatabaseQS{ctrl: ctrl}
+	mock.recorder = &MockDatabaseQSMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockDatabaseQS) EXPECT() *MockDatabaseQSMockRecorder {
+	return m.recorder
+}
+
+// QueryRow mocks base method.
+func (m *MockDatabaseQS) QueryRow(ctx context.Context, sql string, args ...any) interfaces.DatabaseScan {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, sql}
+	for _, a := range args {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "QueryRow", varargs...)
+	ret0, _ := ret[0].(interfaces.DatabaseScan)
+	return ret0
+}
+
+// QueryRow indicates an expected call of QueryRow.
+func (mr *MockDatabaseQSMockRecorder) QueryRow(ctx, sql interface{}, args ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, sql}, args...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryRow", reflect.TypeOf((*MockDatabaseQS)(nil).QueryRow), varargs...)
 }

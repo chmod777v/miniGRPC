@@ -31,7 +31,7 @@ type Http_server struct {
 
 func LoadConfig() *Config {
 	var path string
-	flag.StringVar(&path, "config", "", "path") //"config" - имя флага (-config) "path" - описание для справки
+	flag.StringVar(&path, "config", "", "path") //"config" - имя флага (--config) "path" - описание для справки
 	flag.Parse()
 	if path == "" {
 		panic("CONFIG_PATH is empty")

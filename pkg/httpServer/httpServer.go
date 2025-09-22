@@ -3,12 +3,14 @@ package httpServer
 import (
 	"encoding/json"
 	"fmt"
+	"grpc/internal/metrics"
 	"grpc/pkg/database"
 	grpcconect "grpc/pkg/httpServer/grpcConect"
 	g_serv "grpc/pkg/proto"
 	"io"
 	"log/slog"
 	"net/http"
+	"time"
 )
 
 type personID struct {
@@ -26,10 +28,11 @@ func getRequest(body *io.ReadCloser, person interface{}, w http.ResponseWriter) 
 	}
 	return nil
 }
-func (h *HttpServer) handleGet(w http.ResponseWriter, r *http.Request) {
+func (h *HttpServer) handleGet(w http.ResponseWriter, r *http.Request) int {
 	var personID personID
 	if err := getRequest(&r.Body, &personID, w); err != nil {
-		return
+		w.WriteHeader(http.StatusBadRequest)
+		return http.StatusBadRequest
 	}
 	slog.Debug("RequestGet", "Data", personID)
 
@@ -37,7 +40,7 @@ func (h *HttpServer) handleGet(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		slog.Error("Error when GetRequestGrpc", "ERROR", err.Error())
-		return
+		return http.StatusInternalServerError
 	}
 	slog.Debug("ResponseGet", "Data", resp)
 
@@ -51,14 +54,16 @@ func (h *HttpServer) handleGet(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		slog.Error("Error when Marshal", "ERROR", err.Error())
-		return
+		return http.StatusInternalServerError
 	}
 	w.Write(reqbyte)
+	return http.StatusOK
 }
-func (h *HttpServer) handlePost(w http.ResponseWriter, r *http.Request) {
+func (h *HttpServer) handlePost(w http.ResponseWriter, r *http.Request) int {
 	var person database.Person
 	if err := getRequest(&r.Body, &person, w); err != nil {
-		return
+		w.WriteHeader(http.StatusBadRequest)
+		return http.StatusBadRequest
 	}
 	slog.Debug("RequestPost", "Data", person)
 	req := &g_serv.PostRequest{
@@ -72,7 +77,7 @@ func (h *HttpServer) handlePost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		slog.Error("Error when GetRequestGrpc", "ERROR", err.Error())
-		return
+		return http.StatusInternalServerError
 	}
 
 	slog.Debug("ResponsePost", "Data", resp)
@@ -80,19 +85,27 @@ func (h *HttpServer) handlePost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		slog.Error("Error when Marshal", "ERROR", err.Error())
-		return
+		return http.StatusInternalServerError
 	}
 	w.Write(respbyte)
+	return http.StatusOK
 }
 func (h *HttpServer) handler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	var status int
+	defer func() {
+		metrics.ObserveRequest(r.Method, time.Since(start), status)
+	}()
+
 	switch r.Method {
 	case http.MethodGet:
-		h.handleGet(w, r)
+		status = h.handleGet(w, r)
 	case http.MethodPost:
-		h.handlePost(w, r)
+		status = h.handlePost(w, r)
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		slog.Debug("ERROR Method not allowed", "method", r.Method)
+		status = http.StatusBadRequest
 	}
 }
 
@@ -100,6 +113,10 @@ func Run(requestGrpc grpcconect.RequestGrpc, host string, port int) {
 
 	httpServer := &HttpServer{requestGrpc: requestGrpc}
 	http.HandleFunc("/", httpServer.handler)
+
+	go func() {
+		_ = metrics.Listen(host + ":8081")
+	}()
 
 	link := fmt.Sprintf("%s:%v", host, port)
 	slog.Info("Server listening", "Host", link)

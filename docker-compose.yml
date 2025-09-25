@@ -47,10 +47,39 @@ services:
       - ./config/local_docker.yml:/app/local.yml
     ports: 
       - 8080:8080
+      - 8081:8081
     networks:
       - services-networks
     depends_on:
       - grpc-server
+
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./logingConfigs/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheusdata:/prometheus
+    networks:
+      - services-networks
+
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./logingConfigs/grafana.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+      - grafanadata:/var/lib/grafana
+    networks:
+      - services-networks
+
 
 networks:
   services-networks:
@@ -58,3 +87,5 @@ networks:
 
 volumes:
   postgres_data:
+  grafanadata:
+  prometheusdata:

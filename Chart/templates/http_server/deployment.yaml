@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-http
+spec:
+  replicas: {{ .Values.http.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-http
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-http
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-http
+        image: {{ .Values.http.container.image }}
+        imagePullPolicy: Never
+        ports:
+        - containerPort: {{ .Values.http.container.portPod }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.http.probe.path }}
+            port: {{ .Values.http.probe.port }}
+          initialDelaySeconds: 1
+          periodSeconds: 2
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.http.probe.path }}
+            port: {{ .Values.http.probe.port }}
+          initialDelaySeconds: 1
+          periodSeconds: 2

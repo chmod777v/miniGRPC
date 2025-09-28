@@ -105,7 +105,7 @@ func (h *HttpServer) handler(w http.ResponseWriter, r *http.Request) {
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		slog.Debug("ERROR Method not allowed", "method", r.Method)
-		status = http.StatusBadRequest
+		status = http.StatusMethodNotAllowed
 	}
 }
 

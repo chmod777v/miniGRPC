@@ -1,0 +1,18 @@
+apiVersion: v2
+name       : GRPC
+description: My http_grpc server
+type       : application
+version    : 0.1.0   # This is the Helm Chart version
+appVersion : "1.2.3" # This is the version of the application being deployed
+
+keywords:
+  - grpc
+  - http
+  - postgres
+  - grafana
+  - prometheus
+
+maintainers:
+  - name : chmod
+    email: chmod@777v.net
+    url  : www.chmod.net/777v

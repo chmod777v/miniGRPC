@@ -19,6 +19,7 @@ COPY --from=builder /app/config/local_docker.yml ./local.yml
 
 RUN chmod +x http-server
 
+EXPOSE 8081
 EXPOSE 8080
 
 CMD ["./http-server", "--config=./local.yml"]

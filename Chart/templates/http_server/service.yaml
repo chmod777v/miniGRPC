@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-http-service
+spec:
+  selector:
+    app: {{ .Release.Name }}-http
+  ports:
+    - name: {{ .Release.Name }}-http
+      protocol: TCP
+      port: {{ .Values.http.container.portPod}}
+      targetPort: {{ .Values.http.container.portIn}}
+    - name: {{ .Release.Name }}-http-metrics
+      protocol: TCP
+      port: {{ .Values.http.probe.port}}
+      targetPort: {{ .Values.http.probe.port}}
+  type: NodePort

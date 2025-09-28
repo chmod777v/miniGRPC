@@ -1,0 +1,9 @@
+http:
+  container:
+    image: grpc-http-server
+    portPod: 8080 #порт поды
+    portIn: 8080 #порт сервиса внутри поды
+  probe:
+    port: 8081
+    path: /metrics
+  replicaCount: 1

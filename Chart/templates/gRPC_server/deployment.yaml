@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-grpc
+spec:
+  replicas: {{ .Values.grpc.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-grpc
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-grpc
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-grpc
+        image: {{ .Values.grpc.container.image }}
+        imagePullPolicy: Never
+        ports:
+        - containerPort: {{ .Values.grpc.container.portPod }}

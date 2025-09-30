@@ -8,7 +8,7 @@ database:
 
 grpc_server:
   port: 8090
-  host: "grpc-server"
+  host: "0.0.0.0" #grpc-server
 
 http_server:
   port: 8080

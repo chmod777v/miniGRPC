@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-grpc-service
+spec:
+  selector:
+    app: {{ .Release.Name }}-grpc
+  ports:
+    - name: {{ .Release.Name }}-grpc
+      protocol: TCP
+      port: {{ .Values.grpc.container.portPod}}
+      targetPort: {{ .Values.grpc.container.portIn}}
+  type: NodePort

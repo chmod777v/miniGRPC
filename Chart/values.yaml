@@ -7,3 +7,10 @@ http:
     port: 8081
     path: /metrics
   replicaCount: 1
+
+grpc:
+  container:
+    image: grpc-grpc-server
+    portPod: 8090
+    portIn: 8090
+  replicaCount: 1

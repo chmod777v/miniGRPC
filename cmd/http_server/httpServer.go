@@ -14,7 +14,7 @@ func main() {
 	logger.Init(cfg.Env)
 	slog.Info("Cfg launched successfully")
 
-	serv := grpcconect.NewServer(cfg.Grpc_server.Host, cfg.Grpc_server.Port)
+	serv := grpcconect.NewServer(cfg.Http_server.Grpc_client.Host, cfg.Http_server.Grpc_client.Port)
 
 	go httpServer.Run(serv, cfg.Http_server.Host, cfg.Http_server.Port)
 	httpshutdown.Shutdown(serv)

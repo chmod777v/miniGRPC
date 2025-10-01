@@ -14,3 +14,8 @@ grpc:
     portPod: 8090
     portIn: 8090
   replicaCount: 1
+
+ingress:
+  host: "localhost"
+  port: 8080
+  path: "/"

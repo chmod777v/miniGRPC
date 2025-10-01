@@ -25,8 +25,9 @@ func NewServer(host string, port int) *Server {
 	link := fmt.Sprintf("%s:%v", host, port)
 	conn, err := grpc.NewClient(link, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		panic("Failed to conect to server:" + err.Error())
+		slog.Error("Failed to conect to server:", "ERROR", err.Error())
 	}
+	slog.Info("Conect to gRPC server:", "Host", link)
 	return &Server{
 		grpcClient: g_serv.NewServiceClient(conn),
 		conn:       conn,

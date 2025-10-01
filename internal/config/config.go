@@ -25,6 +25,11 @@ type Grpc_server struct {
 	Host string
 }
 type Http_server struct {
+	Port        int
+	Host        string
+	Grpc_client Grpc_client
+}
+type Grpc_client struct {
 	Port int
 	Host string
 }

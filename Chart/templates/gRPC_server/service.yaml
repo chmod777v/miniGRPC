@@ -10,4 +10,4 @@ spec:
       protocol: TCP
       port: {{ .Values.grpc.container.portPod}}
       targetPort: {{ .Values.grpc.container.portIn}}
-  type: NodePort
+  type: ClusterIP

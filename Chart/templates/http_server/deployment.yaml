@@ -11,6 +11,10 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-http
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8081"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
       - name: {{ .Release.Name }}-http
@@ -22,11 +26,11 @@ spec:
           httpGet:
             path: {{ .Values.http.probe.path }}
             port: {{ .Values.http.probe.port }}
-          initialDelaySeconds: 1
-          periodSeconds: 2
+          initialDelaySeconds: 2
+          periodSeconds: 3
         livenessProbe:
           httpGet:
             path: {{ .Values.http.probe.path }}
             port: {{ .Values.http.probe.port }}
-          initialDelaySeconds: 1
-          periodSeconds: 2
+          initialDelaySeconds: 2
+          periodSeconds: 7

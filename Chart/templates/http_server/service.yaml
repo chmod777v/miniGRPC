@@ -14,6 +14,6 @@ spec:
 
     - name: {{ .Release.Name }}-http-metrics
       protocol: TCP
-      port: {{ .Values.http.probe.port}}
-      targetPort: {{ .Values.http.probe.port}}
+      port: {{ .Values.http.metrics.port}}
+      targetPort: {{ .Values.http.metrics.port}}
   type: ClusterIP

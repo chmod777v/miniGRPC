@@ -3,19 +3,29 @@ http:
     image: grpc-http-server
     portPod: 8080 #порт поды
     portIn: 8080 #порт сервиса внутри поды
-  probe:
+  metrics:
     port: 8081
     path: /metrics
-  replicaCount: 1
+  replicaCount: 5
 
 grpc:
   container:
     image: grpc-grpc-server
-    portPod: 8090
-    portIn: 8090
+    portPod: 9090
+    portIn: 9090
+  replicaCount: 1
+
+prometheus:
+  container:
+    image: prom/prometheus
+    portPod: 9090
+    portIn: 9090
   replicaCount: 1
 
 ingress:
-  host: "localhost"
-  port: 8080
-  path: "/123"
+  http:
+    host: localhost
+    path: /
+  prometheus:
+    host: prometheus.127.0.0.1.nip.io #->127.0.0.1(в production отдельный домен)
+    path: /

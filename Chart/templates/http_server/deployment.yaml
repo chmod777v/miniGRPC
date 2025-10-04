@@ -13,8 +13,8 @@ spec:
         app: {{ .Release.Name }}-http
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "8081"
-        prometheus.io/path: "/metrics"
+        prometheus.io/port: {{ .Values.http.metrics.port | quote}} #quote - функция helm которая оборачивает значение в ковычки
+        prometheus.io/path: {{ .Values.http.metrics.path }}
     spec:
       containers:
       - name: {{ .Release.Name }}-http
@@ -24,13 +24,13 @@ spec:
         - containerPort: {{ .Values.http.container.portPod }}
         readinessProbe:
           httpGet:
-            path: {{ .Values.http.probe.path }}
-            port: {{ .Values.http.probe.port }}
+            path: {{ .Values.http.metrics.path }}
+            port: {{ .Values.http.metrics.port }}
           initialDelaySeconds: 2
           periodSeconds: 3
         livenessProbe:
           httpGet:
-            path: {{ .Values.http.probe.path }}
-            port: {{ .Values.http.probe.port }}
+            path: {{ .Values.http.metrics.path }}
+            port: {{ .Values.http.metrics.port }}
           initialDelaySeconds: 2
           periodSeconds: 7

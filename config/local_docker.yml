@@ -2,7 +2,7 @@ env: "development" #production
 database:
   username: "postgres"
   password: "1234"
-  host: "postgres"
+  host: "192.168.1.74" #postgres
   port: 5432
   db_name: "miniGRPC"
 
@@ -15,4 +15,4 @@ http_server:
   host: "0.0.0.0"
   grpc_client:
     port: 8090
-    host: "grpc-grpc-service"
+    host: "grpc-grpc-service" #grpc-server

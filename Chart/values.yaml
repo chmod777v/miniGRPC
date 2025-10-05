@@ -6,13 +6,13 @@ http:
   metrics:
     port: 8081
     path: /metrics
-  replicaCount: 5
+  replicaCount: 1
 
 grpc:
   container:
     image: grpc-grpc-server
-    portPod: 9090
-    portIn: 9090
+    portPod: 8090
+    portIn: 8090
   replicaCount: 1
 
 prometheus:
@@ -22,10 +22,23 @@ prometheus:
     portIn: 9090
   replicaCount: 1
 
+grafana:
+  container:
+    image: grafana/grafana
+    admin_user: "admin"
+    admin_pass: "admin"
+    portPod: 3000
+    portIn: 3000
+  replicaCount: 1
+
+
 ingress:
   http:
     host: localhost
     path: /
   prometheus:
     host: prometheus.127.0.0.1.nip.io #->127.0.0.1(в production отдельный домен)
+    path: /
+  grafana:
+    host: grafana.127.0.0.1.nip.io
     path: /
